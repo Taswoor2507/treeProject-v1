@@ -141,5 +141,54 @@ const logoutUser = asyncHandler(async(req, res) => {
 })
 
 
+const deleteUser = asyncHandler(async (req, res, next) => {
+  const { userId } = req.params; // Assuming user ID is passed as a URL parameter
 
-export { registerUser, loginUser,logoutUser};
+  // Check if user exists
+  const user = await User.findByIdAndDelete(userId)
+
+  if (!user) {
+    return next(new ApiError("User not found", 404));
+  }
+
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "User deleted successfully"));
+});
+
+
+
+// Get all users (admin only)
+const getAllUsers = asyncHandler(async (req, res, next) => {
+  // Fetch all users, excluding password and refreshToken
+  const users = await User.find({}).select("-password -refreshToken");
+
+  if (!users || users.length === 0) {
+    return next(new ApiError("No users found", 404));
+  }
+
+  // Count the total number of users
+  const totalUsers = await User.countDocuments();
+  return res.status(200).json(
+    new ApiResponse(200, { totalUsers,users }, "All users fetched successfully")
+  );
+});
+
+// Get user by ID
+const getUserById = asyncHandler(async (req, res, next) => {
+  const { userId } = req.params;
+
+  // Find user by ID
+  const user = await User.findById(userId).select("-password -refreshToken");
+
+  if (!user) {
+    return next(new ApiError("User not found", 404));
+  }
+
+  return res.status(200).json(
+    new ApiResponse(200, { user }, "User fetched successfully")
+  );
+});
+
+export { registerUser, loginUser,logoutUser, deleteUser , getAllUsers , getUserById};

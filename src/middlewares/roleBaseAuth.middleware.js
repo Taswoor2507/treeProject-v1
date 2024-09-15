@@ -10,6 +10,7 @@ const authRole = (...roles) => {
 
     // Check if the user's role is included in the allowed roles
     if (!roles.includes(req.user.role)) {
+       
       return next(
         new ApiError(
           `Role: ${req.user.role} is not allowed to access this resource`,

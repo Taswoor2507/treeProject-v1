@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 const treeSchema = new mongoose.Schema({
-    name: {
+    treeName: {
       type: String,
       required: true,
     },
