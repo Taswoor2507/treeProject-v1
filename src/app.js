@@ -14,6 +14,10 @@ app.use("/api/users", userRoutes)
 import treeRoutes from "./routes/tree.route.js"
 app.use("/api/trees", treeRoutes)
 
+//comment route 
+import commentRoutes from "./routes/comment.route.js"
+app.use("/api/comments", commentRoutes)
+
 //error handling middleware
 app.use(ErrorHandler)
 export default app;
