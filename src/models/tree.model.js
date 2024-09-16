@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { Schema } from "mongoose";
 const treeSchema = new mongoose.Schema({
     treeName: {
       type: String,

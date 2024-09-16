@@ -10,6 +10,9 @@ app.use(cookieParser())
 //routes
 import userRoutes from "./routes/user.route.js"
 app.use("/api/users", userRoutes)
+// tree routes
+import treeRoutes from "./routes/tree.route.js"
+app.use("/api/trees", treeRoutes)
 
 //error handling middleware
 app.use(ErrorHandler)

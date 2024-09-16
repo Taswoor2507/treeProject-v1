@@ -1,3 +1,6 @@
+import { Schema } from "mongoose";
+import mongoose from "mongoose";
+
 const qrCodeSchema = new Schema({
     tree: {
       type: Schema.Types.ObjectId,
