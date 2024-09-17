@@ -1,9 +1,20 @@
-import { Button } from "./components/ui/button"
+import { ToastContainer } from "react-toastify"
+import LoginForm from "./pages/Login"
+import RegisterForm from "./pages/Register";
+import 'react-toastify/dist/ReactToastify.css';
+import Header from "./components/ui/header/Header";
+import Home from "./pages/Home";
+
+
+
+
 const App = () => {
   return (
-    <div className="p-6">
-      <Button>Shafde cn button</Button>
-    </div>
+    <>
+      <Header/>
+      <Home/>
+    </>
+      
   )
 }
 

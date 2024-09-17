@@ -55,7 +55,7 @@ const addTree = asyncHandler(async (req, res, next) => {
   //get all trees 
 
 const getAllTrees = asyncHandler(async(req,res,next)=>{
-     const trees= await Tree.find({});
+     const trees= await Tree.find({}).populate("qrCode");
      if(!trees ||trees.length === 0 ){
         return next(new ApiError("No trees found", 404));
      }

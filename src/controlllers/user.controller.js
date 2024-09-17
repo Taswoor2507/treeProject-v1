@@ -67,53 +67,51 @@ const registerUser = asyncHandler(async (req, res, next) => {
 const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-  if ( !password && !email) {
-    return next( new ApiError(" both email and password is required" , 400))
+  // Validate request body
+  if (!email || !password) {
+    return next(new ApiError("Both email and password are required", 400));
   }
 
-  const user = await User.findOne({
-   email:email
-  });
-
+  // Find user by email
+  const user = await User.findOne({ email: email });
   if (!user) {
-    return next(new ApiError("User does not exist", 404)()) ;
+    return next(new ApiError("User does not exist", 404));
   }
 
+  // Validate password
   const isPasswordValid = await user.isPasswordCorrect(password);
-
   if (!isPasswordValid) {
     return next(new ApiError("Invalid user credentials", 401));
   }
 
-  const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(
-    user._id
-  );
+  // Generate tokens
+  const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(user._id);
 
-  const loggedInUser = await User.findById(user._id).select(
-    "-password -refreshToken"
-  );
+  // Fetch user details without sensitive data
+  const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
+  // Set cookie options
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production', // Only secure cookies in production
   };
 
+  // Send response with cookies
   return res
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(
-      new ApiResponse(
-        200,
-        {
-          user: loggedInUser,
-          accessToken,
-          refreshToken,
-        },
-        "User logged In Successfully"
-      )
-    );
+    .json(new ApiResponse(
+      200,
+      {
+        user: loggedInUser,
+        accessToken,
+        refreshToken,
+      },
+      "User logged in successfully"
+    ));
 });
+
 
 const logoutUser = asyncHandler(async(req, res) => {
     await User.findByIdAndUpdate(
