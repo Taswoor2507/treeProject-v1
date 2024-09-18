@@ -4,6 +4,7 @@ import RegisterForm from "./pages/Register";
 import 'react-toastify/dist/ReactToastify.css';
 import Header from "./components/ui/header/Header";
 import Home from "./pages/Home";
+import { Outlet } from "react-router-dom";
 
 
 
@@ -12,7 +13,7 @@ const App = () => {
   return (
     <>
       <Header/>
-      <Home/>
+      <Outlet/>
     </>
       
   )

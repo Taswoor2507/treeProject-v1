@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
-import { login } from "@/redux/authSlice/AuthSlice"; // Import the login action
+import { login, setToken } from "@/redux/authSlice/AuthSlice"; // Import the login action
 import { useDispatch } from "react-redux";
+import axios from "axios"; // Import axios
 import {
   Card,
   CardContent,
@@ -22,24 +23,21 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch(); // Hook to dispatch actions
-
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("http://localhost:4040/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        credentials: "include", // Include cookies in the request
-      });
+      const response = await axios.post(
+        "http://localhost:4040/api/users/login",
+        data,
+        { withCredentials: true } // Include cookies in the request
+      );
 
-      const result = await response.json();
-
-      if (response.ok) {
+      const result = response.data;
+      console.log(result);
+      if (response.status === 200) {
         // Dispatch login action with user info
         dispatch(login(result)); // Assuming `result.user` contains the user data
-
+        dispatch(setToken(result.data.accessToken));
+        localStorage.setItem("token", result.data.accessToken);
         toast.success(result.message, {
           autoClose: 2000,
           onClose: () => navigate("/"), // Navigate after toast closes
@@ -51,10 +49,12 @@ const LoginForm = () => {
         });
       }
     } catch (error) {
-      toast.error("Something went wrong, please try again.");
+      const message =
+        error.response?.data?.message || "Something went wrong, please try again.";
+      toast.error(message);
     }
   };
-
+   
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#4a7c59]">
       <Card className="w-full max-w-sm md:max-w-lg lg:max-w-xl mx-auto">

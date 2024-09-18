@@ -8,6 +8,9 @@ router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJWT ,logoutUser);
 router.route("/delete/:userId").delete(verifyJWT , authRole("admin"),deleteUser);
-router.route("/all").get(verifyJWT , authRole("admin"),getAllUsers);
+router.route("/all").get(getAllUsers);
 router.route("/:userId").get(verifyJWT ,getUserById);
 export default router;
+
+
+// router.route("/all").get(verifyJWT , authRole("admin"),getAllUsers);

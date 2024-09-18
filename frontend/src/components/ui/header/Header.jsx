@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {Link} from "react-router-dom";
 import {
   Avatar,
   AvatarFallback,
@@ -25,12 +26,12 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 // import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user } = useSelector((state) => state.authReducer);
+  // console.log(user.data.user.fullName)
   const isLogin = user?.success;
 
   return (
@@ -104,9 +105,9 @@ export default function Example() {
             </PopoverPanel>
           </Popover> */}
 
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">
             Home
-          </a>
+          </Link>
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Trees
           </a>
@@ -114,9 +115,9 @@ export default function Example() {
             About
           </a>
           {
-            isLogin && user.data.user.role==="admin" &&  <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+            isLogin && user.data.user.role==="admin" &&  <Link to={"protected/dashboard"} className="text-sm font-semibold leading-6 text-gray-900">
             Dashboard
-          </a>
+          </Link>
           }
          
         </PopoverGroup>
@@ -135,6 +136,8 @@ export default function Example() {
             
           </Avatar>
           )}
+                    <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">{user.data.user.fullName.toUpperCase()}</p>
+
         </div>
       </nav>
       <Dialog
@@ -183,12 +186,12 @@ export default function Example() {
                 >
                   About
                 </a>
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  About
-                </a>
+                {
+            isLogin && user.data.user.role==="admin" &&  <Link to={"protected/dashboard"} className="mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+            Dashboard
+          </Link>
+          }
+         
               </div>
               <div className="py-6">
               {!isLogin ? (
@@ -205,6 +208,7 @@ export default function Example() {
             
           </Avatar>
           )}
+          <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">{user.data.user.fullName.toUpperCase()}</p>
               </div>
             </div>
           </div>
