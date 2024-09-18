@@ -1,10 +1,6 @@
 import { useState } from "react";
-import {Link} from "react-router-dom";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Link } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Dialog,
   DialogPanel,
@@ -105,7 +101,10 @@ export default function Example() {
             </PopoverPanel>
           </Popover> */}
 
-          <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link
+            to="/"
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
             Home
           </Link>
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
@@ -114,12 +113,14 @@ export default function Example() {
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             About
           </a>
-          {
-            isLogin && user.data.user.role==="admin" &&  <Link to={"protected/dashboard"} className="text-sm font-semibold leading-6 text-gray-900">
-            Dashboard
-          </Link>
-          }
-         
+          {isLogin && user.data.user.role === "admin" && (
+            <Link
+              to={"protected/dashboard"}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Dashboard
+            </Link>
+          )}
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {!isLogin ? (
@@ -131,13 +132,13 @@ export default function Example() {
             </Link>
           ) : (
             <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-            
-          </Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
           )}
-                    <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">{user.data.user.fullName.toUpperCase()}</p>
-
+          <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">
+            {user.data.user.fullName.toUpperCase()}
+          </p>
         </div>
       </nav>
       <Dialog
@@ -186,29 +187,35 @@ export default function Example() {
                 >
                   About
                 </a>
-                {
-            isLogin && user.data.user.role==="admin" &&  <Link to={"protected/dashboard"} className="mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-            Dashboard
-          </Link>
-          }
-         
+                {isLogin && user?.data?.user?.role === "admin" && (
+                  <Link
+                    to={"protected/dashboard"}
+                    className="mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Dashboard
+                  </Link>
+                )}
               </div>
               <div className="py-6">
-              {!isLogin ? (
-            <Link
-              to="/auth/login"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              Login<span aria-hidden="true">&rarr;</span>
-            </Link>
-          ) : (
-            <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-            
-          </Avatar>
-          )}
-          <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">{user.data.user.fullName.toUpperCase()}</p>
+                {!isLogin ? (
+                  <Link
+                    to="/auth/login"
+                    className="text-sm font-semibold leading-6 text-gray-900"
+                  >
+                    Login<span aria-hidden="true">&rarr;</span>
+                  </Link>
+                ) : (
+                  <Avatar>
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                )}
+                <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">
+                  {user.data.user.fullName.toUpperCase()}
+                </p>
               </div>
             </div>
           </div>

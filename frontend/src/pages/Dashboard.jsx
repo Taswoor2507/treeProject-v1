@@ -1,30 +1,29 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userRequestThunk } from "@/redux/userSLice/UserSlice";
+import DashboardCard from "@/components/dashboardCards/dashboardCard";
+import AllTabs from "@/components/tabs/Tabs";
 const Dashboard = () => {
-  const trees = useSelector(
-    (state) => state.treeReducer?.trees?.data?.totalTrees
-  );
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(userRequestThunk());
-  }, []);
-  const users = useSelector(
-    (state) => state.userReducer?.users?.data?.totalUsers
-  );
-  console.log(users);
+  // const trees = useSelector(
+  //   (state) => state.treeReducer?.trees?.data?.totalTrees
+  // );
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(userRequestThunk());
+  // }, []);
+  // const users = useSelector(
+  //   (state) => state.userReducer?.users?.data?.totalUsers
+  // );
+  // console.log(users);
   // console.log(trees)
   // const user = useSelector((state) => {console.log(state)})
   return (
-    <div className="flex gap-4"> 
-      <div className="w-[200px] h-[200px] flex justify-center items-center flex-col bg-slate-400 rounded-full">
-        <h1 className="text-3xl">Total Trees</h1>
-        <p className="text-4xl">{trees ? trees : "0"}</p>
+    <div className="mx-auto flex flex-col max-w-7xl  p-6 lg:px-8 gap-10">
+      <div>
+        <DashboardCard />
       </div>
-
-      <div className="w-[200px] h-[200px] flex justify-center items-center flex-col bg-slate-400 rounded-full">
-        <h1 className="text-3xl">Total Users</h1>
-        <p className="text-4xl">{users ? users : "0"}</p>
+      <div>
+        <AllTabs />
       </div>
     </div>
   );
