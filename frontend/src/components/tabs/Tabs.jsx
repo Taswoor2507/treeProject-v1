@@ -18,14 +18,14 @@ export default function AllTabs() {
     <Tabs defaultValue="Users">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="Users">Users</TabsTrigger>
-        <TabsTrigger value="password">Password</TabsTrigger>
+        <TabsTrigger value="Trees">Trees</TabsTrigger>
       </TabsList>
       <TabsContent value="Users">
         <div className="w-full ">
           <UserTable />
         </div>
       </TabsContent>
-      <TabsContent value="password">
+      <TabsContent value="Trees">
         <TreeTable />
       </TabsContent>
     </Tabs>
