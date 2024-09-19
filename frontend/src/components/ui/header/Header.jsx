@@ -110,9 +110,14 @@ export default function Example() {
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Trees
           </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            About
-          </a>
+          <Link to={"/about"}>
+            <a
+              href="#"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              About
+            </a>
+          </Link>
           {isLogin && user.data.user.role === "admin" && (
             <Link
               to={"protected/dashboard"}
