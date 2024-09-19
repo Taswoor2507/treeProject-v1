@@ -7,12 +7,12 @@ const Trees = () => {
 
   // Fetch the trees data from Redux store using useSelector
   const { trees, status } = useSelector((state) => state.treeReducer);
-console.log(trees)
+  console.log(trees);
   useEffect(() => {
     dispatch(getTreesRequest()); // Fetch trees on component mount
   }, [dispatch]);
 
-  const allTrees = trees?.data?.trees
+  const allTrees = trees?.data?.trees;
   // Conditional rendering based on the status
   if (status === "LOADING") {
     return <h1>Loading...</h1>;
@@ -23,13 +23,12 @@ console.log(trees)
   }
 
   return (
-    <div className="flex flex-wrap gap-2 justify-center">
+    <div className="mx-auto  max-w-7xl  grid grid-cols-3 gap-4 p-6 lg:px-8">
       {allTrees?.map((tree) => (
-       <Tree key={tree._id} tree={tree}/>
-))}
+        <Tree key={tree._id} tree={tree} />
+      ))}
     </div>
   );
 };
 
 export default Trees;
-

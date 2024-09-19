@@ -8,7 +8,7 @@ import QRCode from "../../assets/treesimg/QRCode.png";
 export default function TreeDetails() {
   return (
     <>
-      <div className="flex flex-col md:flex-row gap-8 p-4 max-w-4xl mx-auto border border-red-500">
+      <div className="flex flex-col md:flex-row gap-8 p-4 max-w-4xl mx-auto ">
         <div className="w-full h-[450px]">
           <img
             src={treeImage}
@@ -33,7 +33,7 @@ export default function TreeDetails() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col  gap-8 p-4 max-w-4xl mx-auto border justify-between border-red-500">
+      <div className="flex flex-col  gap-8 p-4 max-w-4xl mx-auto border justify-between ">
         <div className="w-full space-y-4">
           <Textarea placeholder="Type your message here." />
           <button className="bg-green-400 px-4 py-2 rounded-sm">Submit</button>
