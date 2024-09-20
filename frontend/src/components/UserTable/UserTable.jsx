@@ -42,7 +42,7 @@ const leaves = [
     name: "Sakib Al Hasan",
     Email: "exampleuser12345@gmail.com",
     status: "Rejected",
-    reason: "User",
+    reason: "Admin",
   },
 ];
 
