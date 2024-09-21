@@ -23,6 +23,7 @@ import {
   Clock,
   TreePine,
 } from "lucide-react";
+import MultiSelector from "../ui/MultiSelector";
 
 export default function TreeForm() {
   const [formData, setFormData] = useState({
@@ -144,12 +145,12 @@ export default function TreeForm() {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-green-700 flex items-center">
+            {/* <Label className="text-green-700 flex items-center">
               <Bug className="mr-2 h-4 w-4" />
               Diseases
-            </Label>
-            <div className="grid grid-cols-2 gap-2">
-              {["Powdery mildew", "Root rot"].map((disease) => (
+            </Label> */}
+            <div className="w-full">
+              {/* {["Powdery mildew", "Root rot"].map((disease) => (
                 <div key={disease} className="flex items-center space-x-2">
                   <Checkbox
                     id={disease}
@@ -161,7 +162,9 @@ export default function TreeForm() {
                     {disease}
                   </Label>
                 </div>
-              ))}
+              ))} */}
+
+              <MultiSelector />
             </div>
           </div>
 
