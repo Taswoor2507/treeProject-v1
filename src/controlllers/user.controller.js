@@ -55,7 +55,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
       new ApiResponse(
         201,
         {
-          user: newUser,
+          user: createdUser,
           getaccessToken,
           refreshToken,
         },
@@ -189,4 +189,29 @@ const getUserById = asyncHandler(async (req, res, next) => {
   );
 });
 
-export { registerUser, loginUser,logoutUser, deleteUser , getAllUsers , getUserById};
+
+
+
+const refreshToken = asyncHandler(async(req,res,next)=>{
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken)  return next(new ApiError("Unauthorized" , 401)); // No refresh token
+
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+      if (err) return next(ApiError("Unauthorized" , 401)); // Invalid refresh token
+
+      // Generate new access token
+      const newAccessToken = jwt.sign({ username: user.username, id: user.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+
+      // Send the new access token as an HTTP-only cookie
+      res.cookie('accessToken', newAccessToken, {
+          httpOnly: true,
+          secure: false,  // Secure should be true in production
+          sameSite: 'Strict',
+          maxAge: 15 * 60 * 1000 // 15 minutes
+      });
+
+      res.json(new ApiResponse(newAccessToken));
+  });
+})
+
+export { registerUser, loginUser,logoutUser, deleteUser , getAllUsers , getUserById , refreshToken};
