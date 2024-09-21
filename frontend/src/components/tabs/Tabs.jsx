@@ -16,7 +16,7 @@ import TreeTable from "../TreeTable/TreeTable";
 export default function AllTabs() {
   return (
     <Tabs defaultValue="Users">
-      <TabsList className="grid w-full grid-cols-2">
+      <TabsList className="grid gap-4 grid-cols-2 ">
         <TabsTrigger value="Users">Users</TabsTrigger>
         <TabsTrigger value="Trees">Trees</TabsTrigger>
       </TabsList>
