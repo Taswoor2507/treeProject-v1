@@ -68,7 +68,7 @@ const getAllTrees = asyncHandler(async(req,res,next)=>{
 //controller get tree by id
 
 const getTreeById = asyncHandler(async(req,res,next)=>{
- 
+   console.log("..from" , req.user)
     const { treeId } = req.params;
 
     // Find tree by ID

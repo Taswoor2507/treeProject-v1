@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.route("/add-tree").post(addTree)
 router.route("/all").get(getAllTrees)
-router.route("/:treeId").get(getTreeById)
+router.route("/:treeId").get(verifyJWT , getTreeById)
 router.route("/:treeId").patch(verifyJWT , authRole("admin"), updateTree)
 router.route("/:treeId").delete(verifyJWT , authRole("admin"),deleteTree)
 export default router;

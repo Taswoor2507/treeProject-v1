@@ -2,6 +2,7 @@ import express from "express";
 import { 
     deleteUser, 
     getAllUsers, 
+    getCurrentUser, 
     getUserById, 
     loginUser, 
     logoutUser, 
@@ -15,6 +16,8 @@ const router = express.Router();
 
 // User registration
 router.route("/register").post(registerUser);
+router.route("/current").get(verifyJWT, getCurrentUser)
+router.route("/refreshtoken").post(refreshToken);
 
 // User login
 router.route("/login").post(loginUser);
@@ -32,6 +35,6 @@ router.route("/all").get(verifyJWT, authRole("admin"), getAllUsers);
 router.route("/:userId").get(verifyJWT, getUserById);
 
 // Refresh token route (This usually doesn't need JWT verification, depending on your use case)
-router.route("/refreshtoken").get(refreshToken);
+
 
 export default router;

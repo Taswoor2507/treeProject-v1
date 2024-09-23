@@ -5,30 +5,33 @@ import User from "../models/user.model.js";
 import { ACCESS_TOKEN_SECRET } from "../constant.js";
 
 // Middleware to verify JWT
+import mongoose from 'mongoose';
+
 const verifyJWT = asyncHandler(async (req, _, next) => {
     try {
-        // Extract token from header or cookie
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
         
         if (!token) {
             return next(new ApiError("Unauthorized request", 401));
         }
-        
-        // Verify token
+
         const decodedToken = jwt.verify(token, ACCESS_TOKEN_SECRET);
-        
-        // Find user based on token payload
-        const user = await User.findById(decodedToken?._id).select("-password -refreshToken");
-        
-        if (!user) {
-            return next(new ApiError("Invalid Access Token", 401));
+        // console.log("Decoded Token: ", decodedToken); // Debugging
+
+        // Check if decoded _id is a valid MongoDB ObjectId
+        if (!decodedToken?._id || !mongoose.Types.ObjectId.isValid(decodedToken._id)) {
+            return next(new ApiError("Invalid Access Token: Invalid _id", 401));
         }
-        
-        // Attach user to request object
-        req.user = user;
-        next();
+
+        const user = await User.findById(decodedToken?._id.toString()).select("-password -refreshToken");
+     console.log("usre" , user)
+        if (!user) {
+            return next(new ApiError("Invalid Access Token: User not found", 401));
+        }
+
+        req.user = {user, token};
+       return next();
     } catch (error) {
-        // Handle specific JWT errors
         if (error.name === "TokenExpiredError") {
             return next(new ApiError("Access Token expired", 401));
         } else if (error.name === "JsonWebTokenError") {
@@ -38,5 +41,6 @@ const verifyJWT = asyncHandler(async (req, _, next) => {
         }
     }
 });
+
 
 export default verifyJWT;

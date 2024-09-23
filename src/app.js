@@ -8,7 +8,7 @@ const app = express();
 
 // Define the CORS options
 const corsOptions = {
-  origin: 'http://localhost:5174', // Allow requests from port 5173
+  origin: 'http://localhost:5173', // Allow requests from port 5173
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
   credentials: true, // Allow cookies if needed
 };
@@ -18,7 +18,7 @@ app.use(cors(corsOptions));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // Limit each IP to 100 requests per windowMs
+  max: 100, // Limit each IP to 100 requests per windowMs
   message: {message:'Too many requests from this IP, please try again later.'},
 });
 

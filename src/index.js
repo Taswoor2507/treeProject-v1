@@ -1,6 +1,11 @@
 import app from "./app.js";
 import connectDB from "./config/db.config.js";
 import { PORT } from "./constant.js";
+
+
+app.get("/api" , (req,res)=>{
+      res.json({success:true})
+})
 connectDB().then(()=>{
     console.log("Connected to MongoDB");
     app.listen(PORT, ()=>{
