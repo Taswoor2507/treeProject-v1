@@ -4,8 +4,8 @@ const CONSTANTS = {
     DBNAME:"tree" ,
     ACCESS_TOKEN_SECRET:"jdiwkdh23878234yugddsjfsjhgfdsjkfgedjhgfsfsASGJDGDWEUYGWEUFYJS" ,
     REFRESH_TOKEN_SECRET:"saksjasdkhsa3278942384HKDASDJKGSDGKSuiwryweruijcb",
-    ACCESS_TOKEN_EXPIRY :"1m" ,
-    REFRESH_TOKEN_EXPIRY:"2m"
+    ACCESS_TOKEN_EXPIRY :"15m" ,
+    REFRESH_TOKEN_EXPIRY:"7d"
 
 }
 

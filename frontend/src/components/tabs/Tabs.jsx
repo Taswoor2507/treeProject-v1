@@ -14,6 +14,9 @@ import UserTable from "../UserTable/UserTable";
 import TreeTable from "../TreeTable/TreeTable";
 
 export default function AllTabs() {
+
+
+  
   return (
     <Tabs defaultValue="Users">
       <TabsList className="grid gap-4 grid-cols-2 ">

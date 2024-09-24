@@ -4,9 +4,10 @@ import LoginForm from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import App from "./App";
 import Auth from "./layouts/authLayout/Auth";
-import ProtectedRoute from "./protectedRoutes/ProtectedRoute";
+// import ProtectedRoute from "./protectedRoutes/ProtectedRoute";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import { AdminRoute } from "./RoleBasedAuth/Router";
 
 const router = createBrowserRouter([
   {
@@ -31,9 +32,10 @@ const router = createBrowserRouter([
         path: "/", // The main route for your app
         element: <Home />,
       },
-      {
-        path: "protected/dashboard", // The main route for your app
-        element: <Dashboard />, // The dashboard component
+      { 
+          path:"/dashboard",
+          element:<AdminRoute><Dashboard/></AdminRoute>
+      
       },
     ],
   },
@@ -50,22 +52,8 @@ const router = createBrowserRouter([
     path: "/about",
     element: <About />, // Additional register route (can be omitted if handled under /auth/register)
   },
-  {
-    path: "/protected", // The base route for protected content
-    element: (
-      <ProtectedRoute>
-        {" "}
-        {/* Wrap the child with ProtectedRoute */}
-        <Dashboard /> {/* You can specify components inside */}
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: "dashboard",
-        element: <Dashboard />, // Protected dashboard route
-      },
-    ],
-  },
+  
+
 ]);
 
 export default router;

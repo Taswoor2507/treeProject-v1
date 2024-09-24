@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
-import { login, setToken } from "@/redux/authSlice/AuthSlice"; // Import the login action
+import { setCredentials } from "@/redux/authSlice/AuthSlice"; // Updated action
 import { useDispatch } from "react-redux";
-import axios from "axios"; // Import axios
+import axiosInstance from "../axiosCofig/axiosInstance"; // Use axios instance for consistent baseURL
 import {
   Card,
   CardContent,
@@ -19,42 +19,47 @@ import {
 import { Link } from "react-router-dom";
 
 const LoginForm = () => {
+  // React Hook Form
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // Hook to dispatch actions
+  const dispatch = useDispatch();
+
+  // Error message state
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // onSubmit function to handle login
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:4040/api/users/login",
+      const response = await axiosInstance.post(
+        "/users/login",  // Adjust endpoint if needed
         data,
         { withCredentials: true } // Include cookies in the request
       );
 
-      const result = response.data;
-      console.log(result);
       if (response.status === 200) {
         // Dispatch login action with user info
-        dispatch(login(result)); // Assuming `result.user` contains the user data
-        dispatch(setToken(result.data.accessToken));
-        localStorage.setItem("token", result.data.accessToken);
-        toast.success(result.message, {
+        dispatch(setCredentials(response.data)); // Assuming `response.data` contains the user data and token
+        // localStorage.setItem("token", response.data.accessToken); // Store token in local storage
+       console.log(response)
+        // Display success message and navigate
+        toast.success("Login successful!", {
           autoClose: 2000,
-          onClose: () => navigate("/"), // Navigate after toast closes
+          onClose: () => navigate("/dashboard"), // Navigate to dashboard after toast
         });
       } else {
-        toast.error(result.message, {
+        setErrorMessage(response.data.message);
+        toast.error(response.data.message, {
           autoClose: 1000,
-          onClose: () => navigate("/login"), // Navigate after toast closes
         });
       }
     } catch (error) {
       const message =
-        error.response?.data?.message || "Something went wrong, please try again.";
+        error.response?.data?.message || "Login failed, please try again.";
+      setErrorMessage(message);
       toast.error(message);
     }
   };
-   
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#4a7c59]">
       <Card className="w-full max-w-sm md:max-w-lg lg:max-w-xl mx-auto">
@@ -88,6 +93,10 @@ const LoginForm = () => {
                 <span className="text-red-500">{errors.password.message}</span>
               )}
             </div>
+
+            {errorMessage && (
+              <div className="text-red-500 mb-4">{errorMessage}</div>
+            )}
 
             <Button type="submit" className="w-full">
               Login

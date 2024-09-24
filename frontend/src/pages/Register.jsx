@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import {
@@ -14,6 +13,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const RegisterForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -39,12 +39,14 @@ const RegisterForm = () => {
           onClose: () => navigate("/login"), // Redirect to login after successful registration
         });
       } else {
-        toast.error(result.message, {
-          autoClose: 1000,
-        });
+        if (response.status === 429) {
+          setErrorMessage(result.message);  // Handle rate-limiting error
+        } else {
+          setErrorMessage(result.message || "Something went wrong.");
+        }
       }
     } catch (error) {
-      toast.error("Something went wrong, please try again.");
+      setErrorMessage("Network error. Please try again.");
     }
   };
 
@@ -94,6 +96,8 @@ const RegisterForm = () => {
                 <span className="text-red-500">{errors.password.message}</span>
               )}
             </div>
+
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
             <Button type="submit" className="w-full">
               Register

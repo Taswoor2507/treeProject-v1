@@ -1,12 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import AuthReducer from "./authSlice/AuthSlice.jsx"
-import TreeReducer from "./treeSlice/treeSlice.jsx"
-import UserReducer from "./userSLice/UserSlice.jsx"
+import AuthReducer from "./authSlice/AuthSlice"
+import TreeReducer from "./treeSlice/TreeSlice"
 const store = configureStore({
     reducer:{
-     authReducer:AuthReducer,
-     treeReducer:TreeReducer ,
-     userReducer:UserReducer ,
+   authReducer:AuthReducer,
+   treeReducer:TreeReducer
+
     }
 })
 

@@ -3,14 +3,16 @@ import asyncHandler from "../utils/asyncHandler.util.js";
 
 // Middleware to check if user has one of the allowed roles
 const authRole = (...roles) => {
-  return asyncHandler((req, res, next) => {
-    console.log("fu", req.user)
-    if (!req.user) {
+  return asyncHandler(async (req, res, next) => {
+    // console.log("fu", req.user)
+   const data = req.user
+  console.log(data.user.role)
+    if (!data.user.role) {
       return next(new ApiError("Unauthorized request", 401));
     }
 
     // Check if the user's role is included in the allowed roles
-    if (!roles.includes(req.user.role)) {
+    if (!roles.includes(data.user.role)) {
        
       return next(
         new ApiError(
