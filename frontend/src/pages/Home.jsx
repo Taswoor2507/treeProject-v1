@@ -4,7 +4,8 @@ import React from 'react'
 const Home = () => {
   return (
     <div>
-      <Trees/>
+      {/* <Trees/> */}
+      <h1>Home</h1>
     </div>
   )
 }

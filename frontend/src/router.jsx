@@ -25,12 +25,16 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "",
+    path: "/",
     element: <App />, // Public route (your main App component)
     children: [
       {
-        path: "/", // The main route for your app
+        path: "", // The main route for your app
         element: <Home />,
+      },
+      {
+        path: "/about",
+        element: <About />, // Additional register route (can be omitted if handled under /auth/register)
       },
       { 
           path:"/dashboard",
@@ -39,19 +43,16 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/login",
-    element: <LoginForm />, // Additional login route (can be omitted if handled under /auth/login)
-  },
-  {
-    path: "/register",
-    element: <RegisterForm />, // Additional register route (can be omitted if handled under /auth/register)
-  },
+  // {
+  //   path: "/login",
+  //   element: <LoginForm />, // Additional login route (can be omitted if handled under /auth/login)
+  // },
+  // {
+  //   path: "/register",
+  //   element: <RegisterForm />, // Additional register route (can be omitted if handled under /auth/register)
+  // },
 
-  {
-    path: "/about",
-    element: <About />, // Additional register route (can be omitted if handled under /auth/register)
-  },
+  
   
 
 ]);

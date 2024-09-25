@@ -5,40 +5,47 @@ import { Dialog, DialogPanel, PopoverGroup } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from '@/redux/authSlice/AuthSlice'; // Adjust the path accordingly
-import axios from "axios";
 import axiosInstance from "@/axiosCofig/axiosInstance";
-
+import { toast, ToastContainer } from "react-toastify";
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.authReducer.accessToken);
 
-  if (!user) {
-    return <div>Loading...</div>; // Fallback while loading
-  }
+  // if (!user) {
+  //   return <div>Loading...</div>; // Fallback while loading
+  // }
 
   const isLogin = user?.success;
 
   // Logout function
 
-const handleLogout = async () => {
-  try {
-    // Send logout request to the server
-    await axiosInstance.post("/users/logout");
-    
-    // If the request is successful, dispatch the logout action
-    dispatch(logout());
-    
-    // Redirect to the login page or homepage
-    navigate("/auth/login");
-  } catch (error) {
-    console.error("Error during logout:", error);
-    // Optionally display an error message to the user
-    alert("Failed to log out. Please try again.");
-  }
-};
-
+  const handleLogout = async () => {
+    try {
+      // Send logout request to the server
+      await axiosInstance.post("/users/logout");
+  
+      // Show toast notification
+      toast.success("Logged out successfully!", {
+        position: "top-center",
+        autoClose: 2000, 
+      });
+  
+      // Dispatch logout action
+      dispatch(logout());
+  
+      // Redirect after toast
+      setTimeout(() => {
+        navigate("/"); 
+      }, 2000);
+    } catch (error) {
+      console.error("Error during logout:", error);
+      // Show toast error instead of alert
+      toast.error("Failed to log out. Please try again.");
+    }
+  };
+  
   return (
     <header className=" bg-[#A1662F]">
       <nav
@@ -101,6 +108,7 @@ const handleLogout = async () => {
               >
                 Logout
               </button>
+              <ToastContainer/>
             </div>
           )}
         </div>

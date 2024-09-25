@@ -1,7 +1,7 @@
-import { ToastContainer } from "react-toastify"
-import LoginForm from "./pages/Login"
+import { ToastContainer } from "react-toastify";
+import LoginForm from "./pages/Login";
 import RegisterForm from "./pages/Register";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/ui/header/Header";
 import Home from "./pages/Home";
 import { Outlet } from "react-router-dom";
@@ -16,16 +16,14 @@ const App = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axiosInstance.get('/users/current', { withCredentials: true });
+        const response = await axiosInstance.get("/users/current", {
+          withCredentials: true,
+        });
         if (response && response.data) {
-          console.log(response, "my Data listing")
-          //  axiosInstance.Authorization({
-            //   'Content-Type': 'application/json',
-            //   'Authorization': `Bearer ${response.data.accessToken}`
-            //  })
-            dispatch(loadUser(response.data));
-            dispatch(setCredentials(response.data)); 
-          } else {
+          console.log(response, "my Data listing");
+          dispatch(loadUser(response.data));
+          dispatch(setCredentials(response.data));
+        } else {
           dispatch(loadUser(null));
         }
       } catch (err) {
@@ -33,17 +31,16 @@ const App = () => {
         dispatch(loadUser(null));
       }
     };
-  
+
     fetchUserData();
   }, [dispatch]);
-  
+
   return (
     <>
-      <Header/>
-      <Outlet/>
+      <Header />
+      <Outlet />
     </>
-      
-  )
-}
+  );
+};
 
-export default App
+export default App;
