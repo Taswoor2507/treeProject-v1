@@ -44,7 +44,7 @@ const LoginForm = () => {
         // Display success message and navigate
         toast.success("Login successful!", {
           autoClose: 2000,
-          onClose: () => navigate("/dashboard"), // Navigate to dashboard after toast
+          onClose: () => navigate("/"), // Navigate to dashboard after toast
         });
       } else {
         setErrorMessage(response.data.message);

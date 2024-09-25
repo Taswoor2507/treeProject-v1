@@ -1,40 +1,43 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Dialog,
-  DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-} from "@headlessui/react";
-import {
-  ArrowPathIcon,
-  Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-// import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-import { useSelector } from "react-redux";
+import { Dialog, DialogPanel, PopoverGroup } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from '@/redux/authSlice/AuthSlice'; // Adjust the path accordingly
+import axios from "axios";
+import axiosInstance from "@/axiosCofig/axiosInstance";
 
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.authReducer.accessToken);
-  // const user = useSelector((state) => state.auth.user); // Adjust according to your state structure
 
-if (!user) {
-  return <div>Loading...</div>; // Or any fallback UI
-}
+  if (!user) {
+    return <div>Loading...</div>; // Fallback while loading
+  }
 
-const isLogin = user?.success;
+  const isLogin = user?.success;
 
+  // Logout function
+
+const handleLogout = async () => {
+  try {
+    // Send logout request to the server
+    await axiosInstance.post("/users/logout");
+    
+    // If the request is successful, dispatch the logout action
+    dispatch(logout());
+    
+    // Redirect to the login page or homepage
+    navigate("/auth/login");
+  } catch (error) {
+    console.error("Error during logout:", error);
+    // Optionally display an error message to the user
+    alert("Failed to log out. Please try again.");
+  }
+};
 
   return (
     <header className=" bg-[#A1662F]">
@@ -63,58 +66,48 @@ const isLogin = user?.success;
           </button>
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
-
-
-          <Link
-            to="/"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
+          <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">
             Home
           </Link>
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Trees
           </a>
-          <Link to={"/about"}>
-            <a
-              href="#"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              About
-            </a>
+          <Link to="/about" className="text-sm font-semibold leading-6 text-gray-900">
+            About
           </Link>
           {isLogin && user?.data?.user?.role === "admin" && (
-            <Link
-              to={"/dashboard"}
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
+            <Link to="/dashboard" className="text-sm font-semibold leading-6 text-gray-900">
               Dashboard
             </Link>
           )}
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {!isLogin ? (
-            <Link
-              to="/auth/login"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
+            <Link to="/auth/login" className="text-sm font-semibold leading-6 text-gray-900">
               Login<span aria-hidden="true">&rarr;</span>
             </Link>
           ) : (
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <div className="flex items-center space-x-4">
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">
+                {user?.data?.user?.fullName?.toUpperCase()}
+              </p>
+              <button
+                onClick={handleLogout}
+                className="text-sm font-semibold leading-6 text-gray-900 bg-red-500 hover:bg-red-600 p-2 rounded-md"
+              >
+                Logout
+              </button>
+            </div>
           )}
-          <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">
-            {user?.data?.user?.fullName?.toUpperCase()}
-          </p>
         </div>
       </nav>
-      <Dialog
-        open={mobileMenuOpen}
-        onClose={setMobileMenuOpen}
-        className="lg:hidden"
-      >
+
+      {/* Mobile Menu */}
+      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-10" />
         <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-[#00b894] px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
@@ -158,7 +151,7 @@ const isLogin = user?.success;
                 </a>
                 {isLogin && user?.data?.user?.role === "admin" && (
                   <Link
-                    to={"/dashboard"}
+                    to="/dashboard"
                     className="mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Dashboard
@@ -167,24 +160,26 @@ const isLogin = user?.success;
               </div>
               <div className="py-6">
                 {!isLogin ? (
-                  <Link
-                    to="/auth/login"
-                    className="text-sm font-semibold leading-6 text-gray-900"
-                  >
+                  <Link to="/auth/login" className="text-sm font-semibold leading-6 text-gray-900">
                     Login<span aria-hidden="true">&rarr;</span>
                   </Link>
                 ) : (
-                  <Avatar>
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
+                  <div className="flex items-center space-x-4">
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">
+                      {user?.data?.user?.fullName?.toUpperCase()}
+                    </p>
+                    <button
+                      onClick={handleLogout}
+                      className="text-sm font-semibold leading-6 text-gray-900 bg-red-500 hover:bg-red-600 p-2 rounded-md"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 )}
-                <p className="text-white inline-block p-2 border border-spacing-1 bg-slate-800">
-                  {user?.data?.user?.fullName?.toUpperCase()}
-                </p>
               </div>
             </div>
           </div>
