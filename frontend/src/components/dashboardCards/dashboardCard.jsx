@@ -1,64 +1,52 @@
-import axiosInstance from "@/axiosCofig/axiosInstance";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Laptop, Calendar, Clock } from "lucide-react";
+import { commentsThunk } from "@/redux/commentSlice/CommentSlice";
+import { Laptop, Calendar } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { treeThunk } from "@/redux/treeSlice/TreeSlice";
 
 export default function DashboardCard() {
-  const [users , setUsers] = useState([]);
-  const [usersCount, setUsersCount] = useState(0)
-  const [trees , setTrees] = useState([])
-  const [comments , setComments] = useState([])
-  const fetchUsers = async()=>{
-    try {
-    const allUsers =await axiosInstance.get("http://localhost:4040/api/users/all" ,{} ,   { withCredentials: true }) // Include cookies in the request)
-    const response = await allUsers.data;
-    console.log(response)
-    setUsers(response);
-  } catch (error) {
-    console.log(error)
-  }
-}
+  const [comments, setComment] = useState([]);
+  const [trees, setTrees] = useState([]);
+  const dispatch = useDispatch();
 
-const fetchTrees =async function(){
-  try {
-    const allTrees = await axiosInstance.get("/trees/all" ,{} ,   { withCredentials: true }) // Include cookies in the request)
-    const response = await allTrees.data;
-    console.log(response)
-    setTrees(response);
-  } catch (error) {
-    console.log(error)
-  }
-}
+  // Fetch comments and trees when the component mounts
+  useEffect(() => {
+    dispatch(commentsThunk());
+    dispatch(treeThunk());
+  }, [dispatch]);
 
-const fetchComments = async function(){
-  try {
-    const allComments = await axiosInstance.get("/comments/all" ,{} ,   { withCredentials: true }) // Include cookies in the request)
-    const response = await allComments.data;
-    console.log(response)
-    setComments(response);
-  } catch (error) {
-    console.log(error)
-  }
-}
+  // Get the comments and trees data from the Redux store
+  const data = useSelector((state) => state.commentReducer);
+  const treesData = useSelector((state) => state.treeReducer?.trees?.data?.trees || []); // Correct access to trees data
 
-useEffect(()=>{
-  fetchUsers()
-  fetchTrees()
-  fetchComments()
-}, [])
-console.log(users)
-console.log(trees)
+  // Update the local `comments` state when the Redux comments data changes
+  useEffect(() => {
+    if (data?.comments?.data?.comments) {
+      setComment(data.comments.data.comments);
+    }
+  }, [data]);
+
+  // Update the local `trees` state when the Redux trees data changes
+  useEffect(() => {
+    setTrees(treesData); // Directly updating state with treesData
+  }, [treesData]);
+
+  console.log("Comments:", comments);
+  console.log("Trees:", trees);
+
   return (
     <div className="grid gap-4 md:grid-cols-3">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Users </CardTitle>
+          <CardTitle className="text-sm font-medium">Users</CardTitle>
           <Laptop className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{users?.data?.totalUsers}</div>
+          <div className="text-2xl font-bold">10</div>
         </CardContent>
       </Card>
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Trees</CardTitle>
@@ -67,16 +55,17 @@ console.log(trees)
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{trees?.data?.totalTrees}</div>
+          <div className="text-2xl font-bold">{trees.length}</div> {/* Display trees count */}
         </CardContent>
       </Card>
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Comments</CardTitle>
           <Calendar className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{comments?.data?.totalComments}</div>
+          <div className="text-2xl font-bold">{comments.length}</div> {/* Display comments count */}
         </CardContent>
       </Card>
     </div>

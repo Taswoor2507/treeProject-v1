@@ -16,12 +16,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast, Toaster } from "react-hot-toast"; // Import toast
 
 export default function TreeTable() {
-  const currentState = useSelector((state) => state.treeReducer); // Access the state from Redux
   const dispatch = useDispatch();
+
+  // Combined useSelector for treeReducer
+  const { status, trees } = useSelector((state) => state.treeReducer || {});
 
   // Fetch trees when component mounts
   useEffect(() => {
-    dispatch(treeThunk()); // Fetch trees from Redux store
+    dispatch(treeThunk());
   }, [dispatch]);
 
   // Handle delete action
@@ -30,6 +32,9 @@ export default function TreeTable() {
       const resultAction = await dispatch(deleteTreeThunk(treeId)).unwrap(); // Dispatch delete action
       if (resultAction.success) {
         toast.success("Tree deleted successfully!", { duration: 1500 });
+        
+        // Fetch the updated trees after successful deletion
+        dispatch(treeThunk());
       } else {
         throw new Error("Failed to delete tree");
       }
@@ -37,16 +42,16 @@ export default function TreeTable() {
       toast.error("Error deleting tree.", { duration: 1500 });
     }
   };
-
+    
   // Check loading and error states
-  if (currentState.status === STATUSES.loading) {
+  if (status === STATUSES.loading) {
     return <div>Loading...</div>;
   }
-  if (currentState.status === STATUSES.error) {
+  if (status === STATUSES.error) {
     return <div>Error fetching trees</div>;
   }
 
-  const treesData = currentState?.trees?.data?.trees || []; // Handle undefined data
+  const treesData = trees?.data?.trees || [];
 
   return (
     <div className="rounded-md border">

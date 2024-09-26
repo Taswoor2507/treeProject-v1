@@ -7,8 +7,11 @@ import ApiResponse from "../utils/apiResponse.util.js";
 // Add a comment to a tree
 const addComment = asyncHandler(async (req, res, next) => {
     const { content, treeId } = req.body;
-    const userId = req.user.id; // Get userId from auth middleware
-     const userName = req.user.fullName;
+    const user = req?.user?.user;
+    const userId = req?.user?.user.id;
+    console.log("check user value", user)
+    // const userId = req?.user?.id; // Get userId from auth middleware
+     const userName = user.fullName;
     // Validation - Check if required fields are provided
     if (!content || !treeId) {
         return next(new ApiError("Content and Tree ID are required", 400));
