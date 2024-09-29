@@ -76,9 +76,9 @@ export default function Example() {
           <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">
             Home
           </Link>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link to="/trees" className="text-sm font-semibold leading-6 text-gray-900">
             Trees
-          </a>
+          </Link>
           <Link to="/about" className="text-sm font-semibold leading-6 text-gray-900">
             About
           </Link>
@@ -145,12 +145,12 @@ export default function Example() {
                 >
                   Home
                 </a>
-                <a
-                  href="#"
+                <Link
+                  to ="/trees"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Trees
-                </a>
+                </Link>
                 <a
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"

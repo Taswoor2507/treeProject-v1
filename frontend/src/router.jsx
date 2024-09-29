@@ -8,6 +8,8 @@ import Auth from "./layouts/authLayout/Auth";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import { AdminRoute } from "./RoleBasedAuth/Router";
+import Tree from "./components/Trees/Tree";
+import Trees from "./components/Trees/Trees";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />, // Additional register route (can be omitted if handled under /auth/register)
+      },
+      {
+        path: "/trees",
+        element: <Trees />, // Additional register route (can be omitted if handled under /auth/register)
       },
       { 
           path:"/dashboard",

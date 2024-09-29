@@ -38,3 +38,18 @@ const Tree = ({ tree }) => {
 };
 
 export default Tree;
+
+
+
+
+
+
+// const [tree , setTree] = useState({});
+//   const dispatch = useDispatch();
+//   const data = useSelector((state) => state.treeReducer || {});
+// const getTree  = u
+
+//   useEffect(()=>{
+//      dispatch(singleTreeThunk())
+//   }, [dispatch])
+ 

@@ -19,7 +19,7 @@ const App = () => {
         const response = await axiosInstance.get("/users/current", {
           withCredentials: true,
         });
-        if (response && response.data) {
+        if (response && response?.data) {
           console.log(response, "my Data listing");
           dispatch(loadUser(response.data));
           dispatch(setCredentials(response.data));

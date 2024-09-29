@@ -37,7 +37,7 @@ export const treeThunk =()=>{
         dispatch(setStatus(STATUSES.loading))
         try {
             const fetchRequest = await axiosInstance.get("/trees/all");
-            const response = await fetchRequest.data;
+            const response  = fetchRequest.data;
             dispatch(getTrees(response))
             dispatch(setStatus(STATUSES.idle))
             
@@ -70,6 +70,22 @@ export const deleteTreeThunk = (treeId) => {
       }
     };
   };
+
+export const singleTreeThunk =  (treeId)=>{
+    return async function(dispatch){
+        dispatch(setStatus(STATUSES.loading))
+        try {
+            const fetchRequest = await axiosInstance.get(`/trees/${treeId}`);
+            const response =  fetchRequest.data;
+            dispatch(getTree(response))
+            dispatch(setStatus(STATUSES.idle))
+            
+        } catch (error) {
+            dispatch(setStatus(STATUSES.error))
+        }
+
+    }
+}
   
   
 
