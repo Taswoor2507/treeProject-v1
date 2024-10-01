@@ -10,7 +10,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,11 +18,10 @@ import {
   Droplets,
   MapPin,
   Calendar,
-  Bug,
   Clock,
   TreePine,
 } from "lucide-react";
-import MultiSelector from "../ui/MultiSelector";
+import axiosInstance from "@/axiosCofig/axiosInstance";
 
 export default function TreeForm() {
   const [formData, setFormData] = useState({
@@ -31,33 +29,44 @@ export default function TreeForm() {
     type: "",
     location: "",
     wateringSchedule: "",
-    diseases: [],
+    diseases: [], // Initialize diseases as an array
     age: "",
     uses: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Check if the field being updated is the diseases field
+    if (name === "diseases") {
+      setFormData((prev) => ({
+        ...prev,
+        diseases: value.split(",").map((disease) => disease.trim()), // Convert comma-separated string to array
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSelectChange = (value) => {
     setFormData((prev) => ({ ...prev, type: value }));
   };
 
-  const handleCheckboxChange = (disease) => {
-    setFormData((prev) => ({
-      ...prev,
-      diseases: prev.diseases.includes(disease)
-        ? prev.diseases.filter((d) => d !== disease)
-        : [...prev.diseases, disease],
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    // Here you would typically send the data to your backend
+    try {
+      const response = await axiosInstance.post("/trees/add-tree", formData); // Replace with your backend API URL
+      if (response.status === 201) {
+        setSuccessMessage("Tree added successfully");
+        setErrorMessage("");
+      }
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || "Failed to add tree");
+      setSuccessMessage("");
+    }
   };
 
   return (
@@ -145,27 +154,18 @@ export default function TreeForm() {
           </div>
 
           <div className="space-y-2">
-            {/* <Label className="text-green-700 flex items-center">
-              <Bug className="mr-2 h-4 w-4" />
+            <Label htmlFor="diseases" className="text-green-700 flex items-center">
+              
               Diseases
-            </Label> */}
-            <div className="w-full">
-              {/* {["Powdery mildew", "Root rot"].map((disease) => (
-                <div key={disease} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={disease}
-                    checked={formData.diseases.includes(disease)}
-                    onCheckedChange={() => handleCheckboxChange(disease)}
-                    className="border-green-300 text-green-600 focus:ring-green-500"
-                  />
-                  <Label htmlFor={disease} className="text-green-700">
-                    {disease}
-                  </Label>
-                </div>
-              ))} */}
-
-              <MultiSelector />
-            </div>
+            </Label>
+            <Textarea
+              id="diseases"
+              name="diseases"
+              value={formData.diseases.join(", ")} // Join the array back into a string for display
+              onChange={handleInputChange}
+              placeholder="Disease 1, Disease 2"
+              className="border-green-300 focus:border-green-500 focus:ring-green-500"
+            />
           </div>
 
           <div className="space-y-2">
@@ -198,6 +198,9 @@ export default function TreeForm() {
               className="border-green-300 focus:border-green-500 focus:ring-green-500"
             />
           </div>
+
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          {successMessage && <p className="text-green-500">{successMessage}</p>}
 
           <Button
             type="submit"

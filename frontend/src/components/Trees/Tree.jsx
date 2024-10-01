@@ -6,8 +6,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 const Tree = ({ tree }) => {
+  // Function to handle navigation when a tree is clicked
+  
+  const navigate = useNavigate()
+  const handleTreeClick = (treeId) => {
+    navigate(`/tree/${treeId}`); // Navigate to the tree details page with the tree ID
+  };
   return (
     <div>
       <Card className="">
@@ -28,7 +35,7 @@ const Tree = ({ tree }) => {
           <p className="text-sm text-gray-600">Location: {tree.location}</p>
         </CardContent>
         <CardFooter>
-          <button className="w-full bg-black text-white px-4 py-2 rounded-sm">
+          <button  onClick={()=>{handleTreeClick(tree._id)}}  className="w-full  bg-black text-white px-4 py-2 rounded-sm">
             View Details
           </button>
         </CardFooter>

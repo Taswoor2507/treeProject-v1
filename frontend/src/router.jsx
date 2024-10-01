@@ -10,6 +10,8 @@ import About from "./pages/About";
 import { AdminRoute } from "./RoleBasedAuth/Router";
 import Tree from "./components/Trees/Tree";
 import Trees from "./components/Trees/Trees";
+import TreeDetails from "./components/TreeDetails/TreeDetails";
+import TreeForm from "./components/TreesForm/TreeForm";
 
 const router = createBrowserRouter([
   {
@@ -42,11 +44,20 @@ const router = createBrowserRouter([
         path: "/trees",
         element: <Trees />, // Additional register route (can be omitted if handled under /auth/register)
       },
+      {
+        path: "/tree/:treeId",
+        element: <TreeDetails/>, // Additional register route (can be omitted if handled under /auth/register)
+      },
       { 
           path:"/dashboard",
           element:<AdminRoute><Dashboard/></AdminRoute>
       
       },
+      { 
+        path:"/add-tree",
+        element:<AdminRoute><TreeForm/></AdminRoute>
+    
+    },
     ],
   },
   // {

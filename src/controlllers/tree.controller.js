@@ -33,7 +33,11 @@ const addTree = asyncHandler(async (req, res, next) => {
    
 
 // Generate the QR code (this will generate a long URL)
-  const generateQrCode= await QrCode.toDataURL(newTree._id.toString())
+// Generate the QR code with the correct URL
+const generateQrCode = await QrCode.toDataURL(`http://localhost:5173/tree/${newTree._id}`); // Remove extra .toString() if not necessary
+if (!generateQrCode) {
+  return next(new ApiError("Failed to generate QR code", 500));
+}
 
   if(!generateQrCode){
     return next(new ApiError("Failed to generate QR code", 500));

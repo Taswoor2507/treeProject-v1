@@ -18,16 +18,12 @@ const router = express.Router();
 router.route("/register").post(registerUser);
 router.route("/current").get(verifyJWT, getCurrentUser)
 router.route("/refreshtoken").post(refreshToken);
-
 // User login
 router.route("/login").post(loginUser);
-
 // Logout route, protected by JWT
 router.route("/logout").post(verifyJWT, logoutUser);
-
 // Delete user, only admin can delete a user, so verifyJWT and role-based auth are applied
 router.route("/delete/:userId").delete(verifyJWT, authRole("admin"), deleteUser);
-
 // Get all users (Uncomment the below line if you want only admin to access this route)
 router.route("/all").get(verifyJWT, authRole("admin"), getAllUsers);
 

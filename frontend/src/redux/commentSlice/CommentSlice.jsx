@@ -37,3 +37,22 @@ export const commentsThunk = function(){
         }
     }
 }
+
+
+
+//getTreeComments 
+export const getTreeComments = function(treeId){
+    return async function(dispatch){
+        dispatch(setStatus(STATUSES.loading));
+        try {
+            const fetchRequest = await axiosInstance.get(`/comments/get-all-comments/${treeId}`);
+            const response = fetchRequest.data;  // response might already be `data`
+            console.log(" specific tree comments" , response);  // Log to see the structure of the data
+            dispatch(getComments(response));
+            dispatch(setStatus(STATUSES.idle));
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(STATUSES.error));
+        }
+    }
+}

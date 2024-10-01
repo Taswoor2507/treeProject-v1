@@ -9,6 +9,7 @@ const addComment = asyncHandler(async (req, res, next) => {
     const { content, treeId } = req.body;
     const user = req?.user?.user;
     const userId = req?.user?.user.id;
+    console.log("check user id " , userId);
     console.log("check user value", user)
     // const userId = req?.user?.id; // Get userId from auth middleware
      const userName = user.fullName;
