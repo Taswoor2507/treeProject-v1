@@ -39,7 +39,7 @@ console.log("all comments " , commentsList)
     return <p>Error in fetching comments.</p>;
   }
 
-  const { treeName, type, location, wateringSchedule, diseases, uses } = tree;
+  const {qrCode , treeName, type, location, wateringSchedule, diseases, uses } = tree;
 
   // Handle form submit to send the comment to the backend
   const handleCommentSubmit = async (e) => {
@@ -112,7 +112,7 @@ console.log("all comments " , commentsList)
             </div>
           </div>
           <div className="flex w-1/2">
-            <img src={QRCode} alt="Tree" className="object-contain" />
+            <img src={qrCode?.qrCodeUrl} alt="Tree" className="object-contain" />
           </div>
         </div>
       </div>

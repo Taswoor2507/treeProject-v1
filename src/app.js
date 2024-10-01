@@ -1,10 +1,16 @@
+import helmet from "helmet";
 import express from "express";
 import ErrorHandler from "./middlewares/errorHandler.js";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
 const app = express();
-// Configure the rate limiter
+
+
+
+// Use Helmet to set security-related HTTP headers
+app.use(helmet());
+
 
 // Define the CORS options
 const corsOptions = {
@@ -13,12 +19,13 @@ const corsOptions = {
   credentials: true, // Allow cookies if needed
 };
 
-// Use the CORS middleware with the options
-app.use(cors(corsOptions));
 
+// Apply CORS to all requests
+app.use(cors(corsOptions));
+// Configure the rate limiter
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // Limit each IP to 100 requests per windowMs
+  max: 200, // Limit each IP to 100 requests per windowMs
   message: {message:'Too many requests from this IP, please try again later.'},
 });
 
