@@ -10,7 +10,7 @@ const Home = () => {
         <p className="text-white font-[18px] mt-5">
         Easily manage, track, and care for your trees with our centralized platform—where data meets nature
         </p>
-        <button className="bg-green-600 text-white px-8 py-3 rounded-md mt-5" onClick={()=>{navigate("/auth/register")}}>Get Started</button>
+        <button className="bg-green-600 text-white px-8 py-3 rounded-md mt-5" onClick={()=>{navigate("/")}}>Download App</button>
       </div>
     </div>
   );
